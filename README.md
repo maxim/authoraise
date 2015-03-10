@@ -54,9 +54,9 @@ Authoraise.strict_mode = true
 # In stict mode any missing key raises an error, even if other checks passed.
 authorize(user: 'sammy') do |policy|
   policy.allow { |user| user == 'sammy' }
-  policy.allow { |post| post.published? }
+  policy.allow { |post| post == 'foo' }
 end
-# => Authoraise::Error: Inconclusive authorization, missing keys: [:post]
+# => Authoraise::Error: Strict mode found missing keys: [:post]
 ~~~
 
 ## Installation
