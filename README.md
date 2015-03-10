@@ -28,18 +28,25 @@ end
 # => true
 
 # Oops, in this example I forgot to pass the post, but user also didn't match.
-authorize(user: 'sammy') do |policy|
-  policy.allow { |user| user == 'bob' }
-  policy.allow { |post| post.published? }
+authorize(user: 'bob') do |policy|
+  policy.allow { |user| user == 'sammy' }
+  policy.allow { |post| post == 'foo' }
 end
 # => Authoraise::Error: Inconclusive authorization, missing keys: [:post]
 
 # Forgot to pass the post object, but user was actually enough.
 authorize(user: 'sammy') do |policy|
   policy.allow { |user| user == 'sammy' }
-  policy.allow { |post| post.published? }
+  policy.allow { |post| post == 'foo' }
 end
 # => true
+
+# Didn't forget to pass anything, but it didn't match, so this is a legit fail.
+authorize(user: 'bob', post: 'foo') do |policy|
+  policy.allow { |user| user == 'sammy' }
+  policy.allow { |post| post == 'bar' }
+end
+# => false
 
 # Let's see what happens in strict mode.
 Authoraise.strict_mode = true
