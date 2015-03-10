@@ -7,9 +7,9 @@ module Authoraise
   class << self; attr_accessor :strict_mode end
 
   def authorize(options = {})
-    policy = Policy.new(options)
+    policy = Policy.new
     yield(policy)
-    policy.authorize
+    policy.authorize(options)
   end
 
   class Check
@@ -36,8 +36,7 @@ module Authoraise
   end
 
   class Policy
-    def initialize(options = {})
-      @options = options
+    def initialize
       @checks = []
       @mode = :any
     end
@@ -47,15 +46,15 @@ module Authoraise
         Check.new(procedure.parameters.map(&:last), procedure)
     end
 
-    def authorize
+    def authorize(options = {})
       raise Error, 'Policy is empty' if @checks.empty?
-      given_keys = @options.keys.to_set
+      given_keys = options.keys.to_set
       assert_all_keys_match(given_keys) if Authoraise.strict_mode
       missing_keys = Set.new
 
       @checks.each do |check|
         if check.required_keys.subset?(given_keys)
-          return true if check.(@options)
+          return true if check.(options)
         else
           missing_keys += check.missing_keys(given_keys)
         end
