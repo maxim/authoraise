@@ -1,8 +1,56 @@
 # Authoraise
 
-Welcome to your new gem! In this directory, you'll find the files you need to be able to package up your Ruby library into a gem. Put your Ruby code in the file `lib/authoraise`. To experiment with that code, run `bin/console` for an interactive prompt.
+So your authorization logic is getting complex, and eventually you start forgetting to pass in all the options that are used to check access. When that happens, your boolean expressions return false, causing false negatives. This tool solves the problem by raising helpful error messages, but also allows you to ignore the issue where it's intended to be that way. No more false negatives!
 
-TODO: Delete this and the text above, and describe your gem
+## Usage
+
+Follow these examples to see what happens when sometimes you forget to pass the keys needed for a certain authorization check.
+
+~~~ruby
+require 'authoraise'
+
+# Authorization policy can be defined as follows...
+policy = Authoraise::Policy.new
+policy.allow { |user| user == 'sammy' }
+policy.allow { |post| post == 'happy_post' }
+
+# ...and used as follows.
+policy.authorize(user: 'sammy', post: 'happy_post') # => true
+policy.authorize(user: 'bob',   post: 'happy_post') # => true
+policy.authorize(user: 'bob',   post: 'sad_post')   # => false
+policy.authorize(user: 'sammy')                     # => true
+
+# Another way is to both define and run a policy using this block form.
+include Authoraise
+authorize(user: 'sammy', post: 'article') do |policy|
+  policy.allow { |user| user == 'sammy' }
+end
+# => true
+
+# Oops, in this example I forgot to pass the post, but user also didn't match.
+authorize(user: 'sammy') do |policy|
+  policy.allow { |user| user == 'bob' }
+  policy.allow { |post| post.published? }
+end
+# => Authoraise::Error: Inconclusive authorization, missing keys: [:post]
+
+# Forgot to pass the post object, but user was actually enough.
+authorize(user: 'sammy') do |policy|
+  policy.allow { |user| user == 'sammy' }
+  policy.allow { |post| post.published? }
+end
+# => true
+
+# Let's see what happens in strict mode.
+Authoraise.strict_mode = true
+
+# In stict mode any missing key raises an error, even if other checks passed.
+authorize(user: 'sammy') do |policy|
+  policy.allow { |user| user == 'sammy' }
+  policy.allow { |post| post.published? }
+end
+# => Authoraise::Error: Inconclusive authorization, missing keys: [:post]
+~~~
 
 ## Installation
 
@@ -19,10 +67,6 @@ And then execute:
 Or install it yourself as:
 
     $ gem install authoraise
-
-## Usage
-
-TODO: Write usage instructions here
 
 ## Development
 
