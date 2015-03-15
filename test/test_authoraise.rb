@@ -53,7 +53,7 @@ class TestAuthoraise < Minitest::Test
     assert_equal [:user, :policy], @lvars
   end
 
-  def test_authorize_only_needs_one_check_with_matching_keys_to_wora
+  def test_authorize_only_needs_one_check_with_matching_keys_to_work
     assert authorize(user: 'ak', post: 'opium') { |policy|
       policy.allow { |foo, bar| false }
       policy.allow { |user, post| true }

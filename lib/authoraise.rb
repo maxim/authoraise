@@ -38,7 +38,6 @@ module Authoraise
   class Policy
     def initialize
       @checks = []
-      @mode = :any
     end
 
     def allow(&procedure)
