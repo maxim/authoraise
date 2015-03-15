@@ -1,10 +1,39 @@
 # Authoraise
 
-So your authorization logic is getting complex, and eventually you start forgetting to pass in all the options that are used to check access. When that happens, your boolean expressions return false, causing false negatives. This tool solves the problem by raising helpful error messages, but also allows you to ignore the issue where it's intended to be that way. No more false negatives!
+This gem is not like other authorization gems because it doesn't enforce any kind of structure or vocabulary on your app. Its only job is to wrap and audit your boolean expressions.
+
+So instead of writing boolean expressions like this.
+
+~~~ruby
+  options[:post] &&
+    (options[:post].publised? || (options[:post].user == options[:user]))
+~~~
+
+You would write them like this.
+
+~~~ruby
+  policy = Authoraise::Policy.new
+  policy.allow { |post| post.published? }
+  policy.allow { |post, user| post.user == user }
+  policy.authorize(options)
+~~~
+
+Or like this.
+
+~~~ruby
+  authorize(options) do |policy|
+    policy.allow { |post| post.published? }
+    policy.allow { |post, user| post.user == user }
+  end
+~~~
+
+You may wonder why would you do that. Well, when your authorization logic gets more complex, you might start forgetting to pass in all the options that are used to check access. When that happens, your boolean expressions return false, causing false negatives. Take a look at the first example above, and think what happens if post is not published and `options[:user]` is not passed in. Hint: you just get a `false`. Your program would lie to you, because really you never gave it a user to check, so how does it know if it's a false? It's straight up missing some data.
+
+This gem solves the problem by raising helpful error messages, but also allowing you to ignore the issue where it's intended to be that way. So in the examples above if you pass an unpublished post and forget to pass in a user in the options, you will see a helpful error message.
 
 ## Usage
 
-Follow these examples to see what happens when sometimes you forget to pass the keys needed for a certain authorization check.
+Follow these examples to understand how things work in various cases.
 
 ~~~ruby
 require 'authoraise'
