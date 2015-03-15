@@ -1,6 +1,6 @@
 # Authoraise
 
-This gem is not like other authorization gems because it doesn't enforce any kind of structure or vocabulary on your app. Its only job is to wrap and audit your boolean expressions.
+This gem is not like other authorization gems because it doesn't enforce any kind of structure or vocabulary on your app. Its only job is to wrap and audit your boolean expressions that you use for authorization.
 
 So instead of writing boolean expressions like this.
 
