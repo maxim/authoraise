@@ -80,7 +80,7 @@ end
 # Let's see what happens in strict mode.
 Authoraise.strict_mode = true
 
-# In stict mode any missing key raises an error, even if other checks passed.
+# In strict mode any missing key raises an error, even if other checks passed.
 authorize(user: 'sammy') do |policy|
   policy.allow { |user| user == 'sammy' }
   policy.allow { |post| post == 'foo' }
