@@ -18,7 +18,16 @@ You would write them like this.
   policy.authorize(options)
 ~~~
 
-Or like this.
+Or like this (my personal favorite).
+
+~~~ruby
+  policy = Authoraise::Policy.new do |p|
+    p.allow { |post| post.published? }
+    p.allow { |post, user| post.user == user }
+  end
+~~~
+
+Or like this, where declaration and authorization both happen inline.
 
 ~~~ruby
   authorize(options) do |policy|
