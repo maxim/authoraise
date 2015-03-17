@@ -96,4 +96,14 @@ class TestAuthoraise < Minitest::Test
     policy = Policy.new { |p| p.allow { false } }
     refute policy.authorize
   end
+
+  def test_cannot_add_check_when_policy_frozen
+    policy = Policy.new{ |p| p.allow { true } }.freeze
+
+    e = assert_raises RuntimeError do
+      policy.allow { false }
+    end
+
+    assert_match /can't modify frozen/, e.message
+  end
 end

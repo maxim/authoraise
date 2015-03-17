@@ -66,6 +66,11 @@ module Authoraise
       end
     end
 
+    def freeze
+      @checks.freeze
+      super
+    end
+
     private
 
     def assert_all_keys_match(given_keys)
