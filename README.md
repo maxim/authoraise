@@ -6,7 +6,7 @@ So instead of writing boolean expressions like this.
 
 ~~~ruby
   options[:post] &&
-    (options[:post].publised? || (options[:post].user == options[:user]))
+    (options[:post].published? || (options[:post].user == options[:user]))
 ~~~
 
 You would write them like this.
