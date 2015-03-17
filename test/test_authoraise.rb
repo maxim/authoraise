@@ -91,4 +91,9 @@ class TestAuthoraise < Minitest::Test
     assert_match /missing keys.+:post, :foo/, error.message
     refute_match /\:user/, error.message
   end
+
+  def test_policy_constructor_accepts_block
+    policy = Policy.new { |p| p.allow { false } }
+    refute policy.authorize
+  end
 end

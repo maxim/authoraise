@@ -6,10 +6,8 @@ module Authoraise
 
   class << self; attr_accessor :strict_mode end
 
-  def authorize(options = {})
-    policy = Policy.new
-    yield(policy)
-    policy.authorize(options)
+  def authorize(options = {}, &block)
+    Policy.new(&block).authorize(options)
   end
 
   class Check
@@ -38,6 +36,7 @@ module Authoraise
   class Policy
     def initialize
       @checks = []
+      yield(self) if block_given?
     end
 
     def allow(&procedure)
