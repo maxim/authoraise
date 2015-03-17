@@ -1,0 +1,7 @@
+v0.1.2
+
+* Policy constructor now accepts block: policy = Policy.new{ |p| p.allow{} }
+
+v0.1.1
+
+* The beginning
