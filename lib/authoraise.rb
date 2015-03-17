@@ -14,7 +14,7 @@ module Authoraise
     attr_reader :required_keys
 
     def initialize(required_keys, procedure)
-      @required_keys = required_keys.to_set
+      @required_keys = required_keys.to_set.freeze
       @procedure = procedure
     end
 
