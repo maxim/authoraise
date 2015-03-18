@@ -1,5 +1,8 @@
 # Authoraise
 
+[![Build Status](https://travis-ci.org/maxim/authoraise.svg)](https://travis-ci.org/maxim/authoraise)
+[![Code Climate](https://codeclimate.com/github/maxim/authoraise/badges/gpa.svg)](https://codeclimate.com/github/maxim/authoraise)
+
 This gem is not like other authorization gems because it doesn't enforce any kind of structure or vocabulary on your app. Its only job is to wrap and audit your boolean expressions that you use for authorization.
 
 So instead of writing boolean expressions like this.
