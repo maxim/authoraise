@@ -12,7 +12,7 @@ So instead of writing boolean expressions like this.
     (options[:post].published? || (options[:post].user == options[:user]))
 ~~~
 
-You would write them like this.
+You would write them like this
 
 ~~~ruby
   policy = Authoraise::Policy.new
@@ -21,16 +21,17 @@ You would write them like this.
   policy.authorize(options)
 ~~~
 
-Or like this (my personal favorite).
+Or like this (my personal favorite)
 
 ~~~ruby
   policy = Authoraise::Policy.new do |p|
     p.allow { |post| post.published? }
     p.allow { |post, user| post.user == user }
   end
+  policy.authorize(options)
 ~~~
 
-Or like this, where declaration and authorization both happen inline.
+Or like this, where declaration and authorization both happen inline
 
 ~~~ruby
   authorize(options) do |policy|
