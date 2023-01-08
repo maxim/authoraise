@@ -19,7 +19,7 @@ class TestAuthoraise < Minitest::Test
       authorize {}
     end
 
-    assert_match /empty/, error.message
+    assert_match(/empty/, error.message)
   end
 
   def test_authorize_returns_true_on_true_policy
@@ -65,8 +65,8 @@ class TestAuthoraise < Minitest::Test
       authorize(post: 'opium') { |policy| policy.allow { |user| true } }
     end
 
-    assert_match /missing keys.+:user/, error.message
-    refute_match /:post/, error.message
+    assert_match(/missing keys.+:user/, error.message)
+    refute_match(/:post/, error.message)
   end
 
   def test_authorize_passes_when_any_check_with_matching_keys_returns_true
@@ -88,8 +88,8 @@ class TestAuthoraise < Minitest::Test
       }
     end
 
-    assert_match /missing keys.+:post, :foo/, error.message
-    refute_match /\:user/, error.message
+    assert_match(/missing keys.+:post, :foo/, error.message)
+    refute_match(/\:user/, error.message)
   end
 
   def test_policy_constructor_accepts_block
@@ -104,6 +104,6 @@ class TestAuthoraise < Minitest::Test
       policy.allow { false }
     end
 
-    assert_match /can't modify frozen/, e.message
+    assert_match(/can't modify frozen/, e.message)
   end
 end
